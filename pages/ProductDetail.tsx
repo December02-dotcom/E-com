@@ -263,7 +263,7 @@ const ProductDetail = () => {
                 
                 <div className="mt-4 bg-white p-4 rounded shadow-sm">
                     <h3 className="text-gray-700 font-medium mb-3 flex items-center gap-2">
-                        <ShieldCheck className="text-primary-600 w-5 h-5" /> GreenShop Đảm Bảo
+                        <ShieldCheck className="text-primary-600 w-5 h-5" /> PK Điện Tử - Camera Đảm Bảo
                     </h3>
                     <p className="text-xs text-gray-500">3 Ngày Trả Hàng / Hoàn Tiền</p>
                 </div>

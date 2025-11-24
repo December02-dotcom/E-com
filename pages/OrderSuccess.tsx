@@ -12,7 +12,7 @@ const OrderSuccess = () => {
         </div>
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Đặt Hàng Thành Công!</h1>
         <p className="text-gray-600 mb-8 leading-relaxed">
-            Cảm ơn bạn đã mua sắm tại <span className="font-bold text-primary-600">GreenShop</span>. <br/>
+            Cảm ơn bạn đã mua sắm tại <span className="font-bold text-primary-600">PK Điện Tử - Camera</span>. <br/>
             Đơn hàng của bạn đang được xử lý và sẽ sớm được giao đến bạn.
         </p>
         

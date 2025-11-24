@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, isAuthenticated } from '../services/auth';
@@ -19,7 +20,7 @@ const Login = () => {
     if (login(password)) {
       navigate('/admin');
     } else {
-      setError('Mật khẩu không đúng. Gợi ý: admin123');
+      setError('Mật khẩu không đúng. Vui lòng thử lại.');
     }
   };
 
@@ -32,7 +33,7 @@ const Login = () => {
             </div>
           <h2 className="text-3xl font-bold text-gray-900">Đăng nhập Quản Trị</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Dành riêng cho chủ cửa hàng GreenShop
+            Dành riêng cho chủ cửa hàng PK Điện Tử - Camera
           </p>
         </div>
         

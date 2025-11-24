@@ -8,11 +8,12 @@ import {
   getOrders, updateOrderStatus
 } from '../services/storage';
 import { generateProductDescription } from '../services/geminiService';
-import { logout } from '../services/auth';
+import { logout, changePassword } from '../services/auth';
 import { 
   Plus, Trash2, Edit2, Wand2, X, Save, Search, 
   Package, LogOut, TrendingUp, DollarSign, ShoppingBag, 
-  BarChart3, Filter, Layers, Tag, ClipboardList, CheckCircle, Truck, Clock, AlertCircle
+  BarChart3, Filter, Layers, Tag, ClipboardList, CheckCircle, Truck, Clock, AlertCircle,
+  Settings, Lock, Key
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -33,6 +34,14 @@ const AdminDashboard = () => {
 
   // Order States
   const [orders, setOrders] = useState<Order[]>([]);
+
+  // Security States
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+      current: '',
+      new: '',
+      confirm: ''
+  });
 
   const navigate = useNavigate();
 
@@ -73,6 +82,23 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  // --- Security Handlers ---
+  const handleChangePassword = () => {
+      if (passwordForm.new !== passwordForm.confirm) {
+          alert('Mật khẩu mới xác nhận không khớp!');
+          return;
+      }
+      
+      const result = changePassword(passwordForm.current, passwordForm.new);
+      if (result.success) {
+          alert(result.message);
+          setIsPasswordModalOpen(false);
+          setPasswordForm({ current: '', new: '', confirm: '' });
+      } else {
+          alert(result.message);
+      }
   };
 
   // --- Product Handlers ---
@@ -220,21 +246,33 @@ const AdminDashboard = () => {
             </div>
             <div>
                 <h1 className="text-xl font-bold text-gray-800">Quản Trị Cửa Hàng</h1>
-                <p className="text-xs text-gray-500">Tổng quan hệ thống GreenShop</p>
+                <p className="text-xs text-gray-500">Tổng quan hệ thống PK Điện Tử - Camera</p>
             </div>
          </div>
          <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-gray-800">Admin User</p>
-                <p className="text-xs text-green-600">Đang hoạt động</p>
+                <div className="flex items-center justify-end gap-1">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <p className="text-xs text-gray-500">Online</p>
+                </div>
             </div>
-            <button 
-                onClick={handleLogout}
-                className="bg-gray-100 text-gray-600 p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition"
-                title="Đăng xuất"
-            >
-                <LogOut className="h-5 w-5" />
-            </button>
+            <div className="flex gap-2">
+                 <button 
+                    onClick={() => setIsPasswordModalOpen(true)}
+                    className="bg-gray-100 text-gray-600 p-2 rounded-full hover:bg-primary-50 hover:text-primary-600 transition"
+                    title="Đổi mật khẩu"
+                >
+                    <Settings className="h-5 w-5" />
+                </button>
+                <button 
+                    onClick={handleLogout}
+                    className="bg-gray-100 text-gray-600 p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition"
+                    title="Đăng xuất"
+                >
+                    <LogOut className="h-5 w-5" />
+                </button>
+            </div>
          </div>
       </div>
 
@@ -731,6 +769,70 @@ const AdminDashboard = () => {
                 className="px-6 py-2 bg-primary-600 text-white font-medium rounded-lg shadow-md hover:bg-primary-700 transition"
               >
                 Lưu danh mục
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CHANGE PASSWORD MODAL */}
+      {isPasswordModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md flex flex-col">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-white rounded-t-2xl">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                  <Lock className="w-5 h-5 text-primary-600"/> Đổi Mật Khẩu
+              </h2>
+              <button onClick={() => setIsPasswordModalOpen(false)} className="bg-gray-100 p-2 rounded-full text-gray-500 hover:bg-gray-200 transition">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="p-8 space-y-4">
+                <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">Mật khẩu hiện tại</label>
+                    <div className="relative">
+                        <Key className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                        <input
+                            type="password"
+                            value={passwordForm.current}
+                            onChange={(e) => setPasswordForm({...passwordForm, current: e.target.value})}
+                            className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary-500 outline-none"
+                        />
+                    </div>
+                </div>
+                <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">Mật khẩu mới</label>
+                    <input
+                        type="password"
+                        value={passwordForm.new}
+                        onChange={(e) => setPasswordForm({...passwordForm, new: e.target.value})}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 outline-none"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">Xác nhận mật khẩu mới</label>
+                    <input
+                        type="password"
+                        value={passwordForm.confirm}
+                        onChange={(e) => setPasswordForm({...passwordForm, confirm: e.target.value})}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary-500 outline-none"
+                    />
+                </div>
+            </div>
+
+            <div className="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl flex justify-end gap-3">
+              <button 
+                onClick={() => setIsPasswordModalOpen(false)}
+                className="px-4 py-2 text-gray-700 font-medium hover:bg-gray-200 rounded-lg transition"
+              >
+                Hủy
+              </button>
+              <button 
+                onClick={handleChangePassword}
+                className="px-6 py-2 bg-primary-600 text-white font-medium rounded-lg shadow-md hover:bg-primary-700 transition"
+              >
+                Lưu Thay Đổi
               </button>
             </div>
           </div>

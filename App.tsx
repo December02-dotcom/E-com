@@ -43,7 +43,7 @@ const App = () => {
                     <div>
                          <div className="flex items-center gap-2 text-primary-600 mb-4">
                             <ShoppingBag className="h-6 w-6" />
-                            <span className="text-xl font-bold">GreenShop</span>
+                            <span className="text-xl font-bold">PK Điện Tử - Camera</span>
                          </div>
                          <p className="text-sm text-gray-500 mb-6 leading-relaxed">
                             Nền tảng thương mại điện tử hàng đầu, chuyên cung cấp các sản phẩm xanh, sạch và chất lượng cao cho cuộc sống hiện đại.
@@ -87,7 +87,7 @@ const App = () => {
 
                     {/* Quick Links */}
                     <div>
-                        <h3 className="font-bold text-gray-800 mb-4 text-xs uppercase tracking-widest">Về GreenShop</h3>
+                        <h3 className="font-bold text-gray-800 mb-4 text-xs uppercase tracking-widest">Về PK Điện Tử - Camera</h3>
                         <ul className="space-y-3 text-sm">
                             <li><a href="#" className="hover:text-primary-600 transition">Giới thiệu</a></li>
                             <li><a href="#" className="hover:text-primary-600 transition">Tuyển dụng</a></li>
@@ -135,7 +135,7 @@ const App = () => {
                 </div>
 
                 <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-sm text-gray-400">© 2023 GreenShop. Tất cả các quyền được bảo lưu.</p>
+                    <p className="text-sm text-gray-400">© 2023 PK Điện Tử - Camera. Tất cả các quyền được bảo lưu.</p>
                     <div className="flex items-center gap-6 text-sm text-gray-400">
                         <span className="flex items-center gap-1"><Globe className="w-4 h-4" /> Tiếng Việt</span>
                         <span>Quốc gia: Việt Nam</span>

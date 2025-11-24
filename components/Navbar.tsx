@@ -35,7 +35,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-2 text-white hover:opacity-90 transition">
             <ShoppingBag className="h-8 w-8" />
             <div className="hidden sm:block">
-              <h1 className="text-2xl font-bold leading-none">GreenShop</h1>
+              <h1 className="text-xl font-bold leading-none">PK Điện Tử - Camera</h1>
               <p className="text-xs opacity-90">Mua gì cũng có</p>
             </div>
           </Link>
