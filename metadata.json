@@ -1,0 +1,5 @@
+{
+  "name": "GreenShop",
+  "description": "A Shopee-like e-commerce application with a green theme, featuring product management and AI-powered product description generation.",
+  "requestFramePermissions": []
+}
