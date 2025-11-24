@@ -1,3 +1,4 @@
+
 export interface Product {
   id: string;
   name: string;
@@ -15,4 +16,24 @@ export interface CartItem extends Product {
   quantity: number;
 }
 
-export type Category = 'All' | 'Fashion' | 'Electronics' | 'Home' | 'Beauty' | 'Books';
+export interface CategoryItem {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+export type OrderStatus = 'pending' | 'shipping' | 'completed' | 'cancelled';
+
+export interface Order {
+  id: string;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  items: CartItem[];
+  totalAmount: number;
+  status: OrderStatus;
+  createdAt: string; // ISO Date string
+}
+
+// Relaxing Category to string to allow dynamic categories
+export type Category = string;

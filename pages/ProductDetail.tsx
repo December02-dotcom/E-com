@@ -1,12 +1,14 @@
+
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Product } from '../types';
-import { getProducts } from '../services/storage';
+import { getProducts, addToCart } from '../services/storage';
 import { askAiAboutProduct } from '../services/geminiService';
 import { Star, MapPin, Truck, ShieldCheck, Heart, MessageCircle, Send, ShoppingCart, Minus, Plus } from 'lucide-react';
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   
@@ -47,6 +49,20 @@ const ProductDetail = () => {
     
     setChatHistory(prev => [...prev, { role: 'ai', text: response }]);
     setIsTyping(false);
+  };
+
+  const handleAddToCart = () => {
+    if (product) {
+        addToCart(product, quantity);
+        alert('Đã thêm sản phẩm vào giỏ hàng!');
+    }
+  };
+
+  const handleBuyNow = () => {
+      if (product) {
+          addToCart(product, quantity);
+          navigate('/cart');
+      }
   };
 
   if (!product) {
@@ -154,10 +170,16 @@ const ProductDetail = () => {
 
             {/* Actions */}
             <div className="flex gap-4 mt-8">
-                <button className="flex-1 max-w-[200px] py-3 bg-primary-50 border border-primary-500 text-primary-600 rounded flex items-center justify-center gap-2 hover:bg-primary-100 transition">
+                <button 
+                    onClick={handleAddToCart}
+                    className="flex-1 max-w-[200px] py-3 bg-primary-50 border border-primary-500 text-primary-600 rounded flex items-center justify-center gap-2 hover:bg-primary-100 transition"
+                >
                     <ShoppingCart className="w-5 h-5" /> Thêm Vào Giỏ
                 </button>
-                <button className="flex-1 max-w-[200px] py-3 bg-primary-600 text-white rounded shadow-sm hover:bg-primary-700 transition">
+                <button 
+                    onClick={handleBuyNow}
+                    className="flex-1 max-w-[200px] py-3 bg-primary-600 text-white rounded shadow-sm hover:bg-primary-700 transition"
+                >
                     Mua Ngay
                 </button>
             </div>

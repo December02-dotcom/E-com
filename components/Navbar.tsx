@@ -1,8 +1,32 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Search, Menu, ShoppingBag, Edit3 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getCartCount } from '../services/storage';
 
 const Navbar = () => {
+  const [cartCount, setCartCount] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Initial load
+    setCartCount(getCartCount());
+
+    // Listen for storage changes (for multiple tabs) or custom events
+    const handleCartChange = () => {
+      setCartCount(getCartCount());
+    };
+
+    window.addEventListener('cart-change', handleCartChange);
+    // Optional: listen to storage event for cross-tab sync
+    window.addEventListener('storage', handleCartChange);
+
+    return () => {
+      window.removeEventListener('cart-change', handleCartChange);
+      window.removeEventListener('storage', handleCartChange);
+    };
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-green-600 to-primary-500 shadow-md">
       <div className="container mx-auto px-4 py-3">
@@ -35,14 +59,16 @@ const Navbar = () => {
                 <span className="text-xs mt-0.5 font-medium hidden md:block">Quản lý</span>
             </Link>
 
-            <div className="flex flex-col items-center hover:opacity-80 transition cursor-pointer relative group">
+            <Link to="/cart" className="flex flex-col items-center hover:opacity-80 transition cursor-pointer relative group">
               <div className="relative">
                 <ShoppingCart className="h-7 w-7 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-green-600">
-                  3
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-green-600 animate-bounce">
+                    {cartCount > 99 ? '99+' : cartCount}
+                  </span>
+                )}
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

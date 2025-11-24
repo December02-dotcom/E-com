@@ -1,25 +1,23 @@
+
 import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
-import { Product, Category } from '../types';
-import { getProducts } from '../services/storage';
-import { Filter, ChevronRight, Tag } from 'lucide-react';
-
-const CATEGORIES: { id: Category; label: string; icon: string }[] = [
-  { id: 'All', label: 'Tất cả', icon: '🛍️' },
-  { id: 'Fashion', label: 'Thời Trang', icon: '👕' },
-  { id: 'Electronics', label: 'Điện Tử', icon: '📱' },
-  { id: 'Beauty', label: 'Sắc Đẹp', icon: '💄' },
-  { id: 'Home', label: 'Nhà Cửa', icon: '🏠' },
-  { id: 'Books', label: 'Sách', icon: '📚' },
-];
+import { Product, Category, CategoryItem } from '../types';
+import { getProducts, getCategories } from '../services/storage';
+import { ChevronRight, Tag } from 'lucide-react';
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>('All');
 
   useEffect(() => {
-    // Load products from "local DB"
+    // Load products and categories from "local DB"
     setProducts(getProducts());
+    
+    const loadedCategories = getCategories();
+    // Add "All" category manually for the UI
+    const allCategory: CategoryItem = { id: 'All', label: 'Tất cả', icon: '🛍️' };
+    setCategories([allCategory, ...loadedCategories]);
   }, []);
 
   const filteredProducts = selectedCategory === 'All' 
@@ -63,7 +61,7 @@ const Home = () => {
              <Tag className="w-4 h-4 mr-2 text-primary-500" /> Danh mục
           </h2>
           <div className="flex gap-4 min-w-max">
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
